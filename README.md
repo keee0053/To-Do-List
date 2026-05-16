@@ -5,7 +5,7 @@ JavaScriptで作成したToDoリストアプリです。
 
 ## 公開URL
 
-※GitHub Pagesを設定したあとにURLを貼ります。
+https://keee0053.github.io/To-Do-List/
 
 ## 機能
 
