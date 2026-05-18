@@ -69,6 +69,8 @@ function renderTasks() {
 }
 
 if (task.deadline) {
+    let timerId;
+
     function updateCountdown() {
         const deadline = new Date(task.deadline);
         const now = new Date();
@@ -89,7 +91,7 @@ if (task.deadline) {
             days + "d" + hours + "h" + minutes + "m" + seconds + "s";
     }
     updateCountdown();
-    const timerId = setInterval(updateCountdown, 1000);
+    timerId = setInterval(updateCountdown, 1000);
     timerIds[index] = timerId;
 
 
