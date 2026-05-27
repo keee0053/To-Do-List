@@ -91,6 +91,15 @@ function showSaveError(error) {
     alert("クラウドへの保存に失敗しました。時間を置いてもう一度試してください。");
 }
 
+function saveTitleFromInput(task, titleInput) {
+    if (task.title === titleInput.value) {
+        return;
+    }
+
+    task.title = titleInput.value;
+    saveTask(task);
+}
+
 // tasks配列をもとに、表の中身を作り直す。
 function renderTasks() {
     // 再描画前に、前回作ったタイマーをすべて止める。
@@ -130,9 +139,11 @@ function renderTasks() {
             titleInput.placeholder = "タスクのタイトルを入力";
             titleInput.addEventListener("keydown", function (event) {
                 if (event.key === "Enter") {
-                    task.title = titleInput.value;
-                    saveTask(task);
+                    saveTitleFromInput(task, titleInput);
                 }
+            });
+            titleInput.addEventListener("change", function () {
+                saveTitleFromInput(task, titleInput);
             });
             titleCell.appendChild(titleInput);
         }
@@ -199,9 +210,11 @@ function renderTasks() {
             // 編集後のタイトルを保存する。
             newTitleInput.addEventListener("keydown", function (event) {
                 if (event.key === "Enter") {
-                    task.title = newTitleInput.value;
-                    saveTask(task);
+                    saveTitleFromInput(task, newTitleInput);
                 }
+            });
+            newTitleInput.addEventListener("change", function () {
+                saveTitleFromInput(task, newTitleInput);
             });
 
             // 編集後の期限を保存する。
