@@ -27,6 +27,8 @@ const tasksCollection = collection(db, "tasks");
 const tasklist = document.getElementById("task-list");
 const addbutton = document.getElementById("add-button");
 
+clearLegacyLocalTasks();
+
 // タスク本体のデータ。Firestoreから読み込んだ内容を、この配列に反映する。
 let tasks = [];
 
@@ -89,6 +91,14 @@ async function deleteTask(task) {
 function showSaveError(error) {
     console.error("Firestore save error:", error);
     alert("クラウドへの保存に失敗しました。時間を置いてもう一度試してください。");
+}
+
+function clearLegacyLocalTasks() {
+    try {
+        localStorage.removeItem("tasks");
+    } catch (error) {
+        console.warn("Legacy local task cleanup failed:", error);
+    }
 }
 
 function saveTitleFromInput(task, titleInput) {
