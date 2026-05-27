@@ -2,7 +2,7 @@
 
 JavaScriptで作成したToDoリストアプリです。  
 タスクを追加し、期限を設定すると、残り時間をリアルタイムでカウントダウンできます。  
-localStorageを使っているため、ページをリロードしてもタスクの内容が残ります。
+Firebase Firestoreを使っているため、タスクの内容をクラウドに保存できます。
 
 ## 公開URL
 
@@ -31,12 +31,13 @@ https://todolist-project-24fb4.web.app
 - HTML
 - CSS
 - JavaScript
-- localStorage
+- Firebase Hosting
+- Cloud Firestore
 
 ## 工夫したところ
 
 - タスクのデータを配列で管理し、画面表示と保存処理を分けました。
-- `localStorage` を使って、リロード後もタスクが復元されるようにしました。
+- Cloud Firestoreを使って、タスクをクラウドに保存できるようにしました。
 - `setInterval` を使って、残り時間を1秒ごとに更新しています。
 - タイマーIDを管理し、画面を再描画したときに不要なタイマーが増えないようにしました。
 
