@@ -15,7 +15,7 @@ https://todolist-project-24fb4.web.app
 - 期限の設定、編集
 - 期限までの残り時間をリアルタイムで表示
 - 完了したタスクの削除
-- localStorageによるタスクの保存
+- Cloud Firestoreによるタスクの保存
 
 ## 使い方
 
