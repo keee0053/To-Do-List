@@ -27,8 +27,6 @@ const tasksCollection = collection(db, "tasks");
 const tasklist = document.getElementById("task-list");
 const addbutton = document.getElementById("add-button");
 
-clearLegacyLocalTasks();
-
 // タスク本体のデータ。Firestoreから読み込んだ内容を、この配列に反映する。
 let tasks = [];
 
@@ -47,65 +45,25 @@ addbutton.addEventListener("click", async function () {
         updatedAt: now
     };
 
-    try {
-        await addDoc(tasksCollection, newTask);
-    } catch (error) {
-        showSaveError(error);
-    }
+    await addDoc(tasksCollection, newTask);
 });
 
 // 1件のタスクをFirestoreへ保存する。
 async function saveTask(task) {
-    if (!task.id) {
-        return;
-    }
-
     const taskRef = doc(db, "tasks", task.id);
 
-    try {
-        await updateDoc(taskRef, {
-            done: task.done,
-            title: task.title,
-            deadline: task.deadline,
-            createdAt: task.createdAt,
-            updatedAt: Date.now()
-        });
-    } catch (error) {
-        showSaveError(error);
-    }
+    await updateDoc(taskRef, {
+        title: task.title,
+        deadline: task.deadline
+    });
 }
 
 // 1件のタスクをFirestoreから削除する。
 async function deleteTask(task) {
-    if (!task.id) {
-        return;
-    }
-
-    try {
-        await deleteDoc(doc(db, "tasks", task.id));
-    } catch (error) {
-        showSaveError(error);
-    }
-}
-
-function showSaveError(error) {
-    console.error("Firestore save error:", error);
-    alert("クラウドへの保存に失敗しました。時間を置いてもう一度試してください。");
-}
-
-function clearLegacyLocalTasks() {
-    try {
-        localStorage.removeItem("tasks");
-    } catch (error) {
-        console.warn("Legacy local task cleanup failed:", error);
-    }
+    await deleteDoc(doc(db, "tasks", task.id));
 }
 
 function saveTitleFromInput(task, titleInput) {
-    if (task.title === titleInput.value) {
-        return;
-    }
-
     task.title = titleInput.value;
     saveTask(task);
 }
@@ -147,11 +105,6 @@ function renderTasks() {
             titleInput.type = "text";
             titleInput.value = task.title;
             titleInput.placeholder = "タスクのタイトルを入力";
-            titleInput.addEventListener("keydown", function (event) {
-                if (event.key === "Enter") {
-                    saveTitleFromInput(task, titleInput);
-                }
-            });
             titleInput.addEventListener("change", function () {
                 saveTitleFromInput(task, titleInput);
             });
@@ -218,11 +171,6 @@ function renderTasks() {
             newTimeInput.value = task.deadline;
 
             // 編集後のタイトルを保存する。
-            newTitleInput.addEventListener("keydown", function (event) {
-                if (event.key === "Enter") {
-                    saveTitleFromInput(task, newTitleInput);
-                }
-            });
             newTitleInput.addEventListener("change", function () {
                 saveTitleFromInput(task, newTitleInput);
             });
@@ -261,9 +209,5 @@ onSnapshot(
         });
 
         renderTasks();
-    },
-    function (error) {
-        console.error("Firestore read error:", error);
-        alert("クラウドからタスクを読み込めませんでした。Firestoreのルールを確認してください。");
     }
 );
