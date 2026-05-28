@@ -21,8 +21,7 @@ service cloud.firestore {
         && data.title.size() <= 200
         && data.deadline is string
         && data.deadline.size() <= 40
-        && data.createdAt is number
-        && data.updatedAt is number;
+        && data.createdAt is number;
     }
   }
 }

@@ -41,8 +41,7 @@ addbutton.addEventListener("click", async function () {
         done: false,
         title: "",
         deadline: "",
-        createdAt: now,
-        updatedAt: now
+        createdAt: now
     };
 
     await addDoc(tasksCollection, newTask);
