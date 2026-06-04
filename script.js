@@ -10,6 +10,10 @@ import {
     query,
     updateDoc
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDuMEWFCmMVkAV7OjiL_6mHreTit3CrG3g",
@@ -21,6 +25,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 const tasksCollection = collection(db, "tasks");
 
@@ -210,3 +215,8 @@ onSnapshot(
         renderTasks();
     }
 );
+onAuthStateChanged(auth, function (user) {
+    if (!user) {
+        location.href = "login.html";
+    }
+});

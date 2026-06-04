@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - To Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+    <h1>ログイン</h1>
+
+    <main class="login-form">
+        <div>
+            <label for="email-input">メールアドレス</label>
+            <input id="email-input" type="email" autocomplete="email" required>
+        </div>
+
+        <div>
+            <label for="password-input">パスワード</label>
+            <input id="password-input" type="password" autocomplete="current-password" minlength="6" required>
+        </div>
+
+        <button type="button" id="login-button">ログイン</button>
+        <button type="button" id="signup-button">新規登録</button>
+    </main>
+
+    <script type="module" src="login.js"></script>
+</body>
+</html>
