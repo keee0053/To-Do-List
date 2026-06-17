@@ -12,7 +12,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 import {
     getAuth,
-    onAuthStateChanged
+    onAuthStateChanged,
+    signOut
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -27,10 +28,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const tasksCollection = collection(db, "tasks");
+let tasksCollection;
 
 const tasklist = document.getElementById("task-list");
 const addbutton = document.getElementById("add-button");
+const logoutButton = document.getElementById("logout-button");
 
 // タスク本体のデータ。Firestoreから読み込んだ内容を、この配列に反映する。
 let tasks = [];
@@ -54,7 +56,7 @@ addbutton.addEventListener("click", async function () {
 
 // 1件のタスクをFirestoreへ保存する。
 async function saveTask(task) {
-    const taskRef = doc(db, "tasks", task.id);
+    const taskRef = doc(tasksCollection, task.id);
 
     await updateDoc(taskRef, {
         title: task.title,
@@ -64,7 +66,7 @@ async function saveTask(task) {
 
 // 1件のタスクをFirestoreから削除する。
 async function deleteTask(task) {
-    await deleteDoc(doc(db, "tasks", task.id));
+    await deleteDoc(doc(tasksCollection, task.id));
 }
 
 function saveTitleFromInput(task, titleInput) {
@@ -201,22 +203,30 @@ function renderTasks() {
     });
 }
 
-// Firestoreのtasksコレクションを監視し、変更があれば画面を更新する。
-onSnapshot(
-    query(tasksCollection, orderBy("createdAt")),
-    function (snapshot) {
-        tasks = snapshot.docs.map(function (documentSnapshot) {
-            return {
-                id: documentSnapshot.id,
-                ...documentSnapshot.data()
-            };
-        });
-
-        renderTasks();
-    }
-);
 onAuthStateChanged(auth, function (user) {
     if (!user) {
         location.href = "login.html";
+        return;
     }
+
+    tasksCollection = collection(db, "users", user.uid, "tasks");
+
+    // ログイン中のユーザー専用のtasksコレクションを監視し、変更があれば画面を更新する。
+    onSnapshot(
+        query(tasksCollection, orderBy("createdAt")),
+        function (snapshot) {
+            tasks = snapshot.docs.map(function (documentSnapshot) {
+                return {
+                    id: documentSnapshot.id,
+                    ...documentSnapshot.data()
+                };
+            });
+
+            renderTasks();
+        }
+    );
+});
+
+logoutButton.addEventListener("click", async function () {
+    await signOut(auth);
 });
