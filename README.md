@@ -1,12 +1,8 @@
-# To-Do List
+# Countdown To-Do List
 
-JavaScriptで作成したToDoリストアプリです。  
-タスクを追加し、期限を設定すると、残り時間をリアルタイムでカウントダウンできます。  
-Firebase Firestoreを使っているため、タスクの内容をクラウドに保存できます。
+期限までの残り時間を、秒単位のカウントダウンで確認できるToDoアプリです。メールアドレスでログインすると、ユーザーごとにタスクをクラウドへ保存できます。
 
-## 公開URL
-
-https://todolist-project-24fb4.web.app
+**[アプリを試す](https://todolist-project-24fb4.web.app/)**
 
 ## 機能
 
@@ -15,7 +11,8 @@ https://todolist-project-24fb4.web.app
 - 期限の設定、編集
 - 期限までの残り時間をリアルタイムで表示
 - 完了したタスクの削除
-- Cloud Firestoreによるタスクの保存
+- メールアドレスとパスワードによる登録・ログイン
+- Cloud Firestoreによるユーザー単位のデータ保存
 
 ## 使い方
 
@@ -28,18 +25,27 @@ https://todolist-project-24fb4.web.app
 
 ## 使用技術
 
-- HTML
-- CSS
-- JavaScript
+- HTML / CSS / JavaScript
+- Firebase Authentication
+- Cloud Firestore / Security Rules
 - Firebase Hosting
-- Cloud Firestore
 
 ## 工夫したところ
 
 - タスクのデータを配列で管理し、画面表示と保存処理を分けました。
-- Cloud Firestoreを使って、タスクをクラウドに保存できるようにしました。
+- AuthenticationのユーザーIDごとに保存先を分け、Security Rulesでも本人のデータだけを読み書きできるようにしました。
 - `setInterval` を使って、残り時間を1秒ごとに更新しています。
 - タイマーIDを管理し、画面を再描画したときに不要なタイマーが増えないようにしました。
+
+## ローカルで確認する
+
+このアプリはFirebaseのCDN版SDKを利用しているため、ビルドは不要です。リポジトリを取得し、ローカルサーバーで配信してください。
+
+```bash
+git clone https://github.com/keee0053/To-Do-List.git
+cd To-Do-List
+npx serve .
+```
 
 ## 今後追加したい機能
 
